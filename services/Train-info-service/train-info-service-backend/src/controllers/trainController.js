@@ -23,3 +23,42 @@ exports.getTrainById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+
+// Search for trains matching From, To, Date, and Coach_Type
+exports.searchTrains = async (req, res) => {
+    const { from_station, to_station, booking_date, coach_type } = req.query;
+
+    console.log(from_station, to_station, booking_date, coach_type);
+
+    try {
+        const result = await pool.query(`
+            SELECT t.train_id AS train_id, 
+            t.train_name AS train_name, 
+            c.coach_id AS coach_id, 
+            c.type, 
+            c.fare, 
+            s.seat_id, 
+            s.available,
+            s.date
+            FROM (SELECT train_id, train_name
+            FROM trains
+            WHERE from_station = $1 and to_station=$2) t
+            JOIN (SELECT coach_id, train_id, type, fare FROM coaches WHERE type = $4) c ON t.train_id = c.train_id
+            JOIN (SELECT seat_id, train_id, coach_id,available,date FROM seats where date= $3)  s ON c.coach_id = s.coach_id and s.train_id=t.train_id
+
+        `, [from_station, to_station, booking_date, coach_type]);
+        
+
+        if (result.rows.length === 0) {
+            console.log("no trains found!")
+            return res.status(404).json({ message: 'No trains found' });
+        }
+        
+        console.log(result.rows[0]);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
