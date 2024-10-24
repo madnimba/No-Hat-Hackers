@@ -34,19 +34,32 @@ exports.searchTrains = async (req, res) => {
 
     try {
         const result = await pool.query(`
-            SELECT t.train_id AS train_id, 
-            t.train_name AS train_name, 
-            c.coach_id AS coach_id, 
-            c.type, 
-            c.fare, 
-            s.seat_id, 
-            s.available,
-            s.date
-            FROM (SELECT train_id, train_name
-            FROM trains
-            WHERE from_station = $1 and to_station=$2) t
-            JOIN (SELECT coach_id, train_id, type, fare FROM coaches WHERE type = $4) c ON t.train_id = c.train_id
-            JOIN (SELECT seat_id, train_id, coach_id,available,date FROM seats where date= $3)  s ON c.coach_id = s.coach_id and s.train_id=t.train_id
+            SELECT 
+    t.train_id AS train_id, 
+    t.train_name AS train_name, 
+    c.coach_id AS coach_id, 
+    c.type, 
+    c.fare, 
+    s.seat_id, 
+    s.available,
+    TO_CHAR(s.date, 'YYYY-MM-DD') AS date
+FROM 
+    (SELECT train_id, train_name
+     FROM trains
+     WHERE from_station = $1 AND to_station = $2) t
+JOIN 
+    (SELECT coach_id, train_id, type, fare 
+     FROM coaches 
+     WHERE type = $4) c 
+ON 
+    t.train_id = c.train_id
+JOIN 
+    (SELECT seat_id, train_id, coach_id, available, date 
+     FROM seats 
+     WHERE date = $3) s 
+ON 
+    c.coach_id = s.coach_id AND s.train_id = t.train_id;
+
 
         `, [from_station, to_station, booking_date, coach_type]);
         

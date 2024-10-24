@@ -6,7 +6,7 @@ const conn = new Client({
   host: "train-ticket-management-server.postgres.database.azure.com",
   user: "nohathackers20",
   password: process.env.PG_PASSWORD, // Store this in .env too
-  database: "train_details",
+  database: "booking_details",
   port: 5432,
   ssl: {
     rejectUnauthorized: false,
