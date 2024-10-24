@@ -13,7 +13,7 @@ app.use(express.json()); // For parsing application/json
 app.use('/api/otp', otpRoutes);
 
 // Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4002;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

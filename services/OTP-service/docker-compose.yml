@@ -1,0 +1,36 @@
+version: '3'
+services:
+  otp-backend:
+    build: ./otp-service-backend
+    container_name: otp-service-backend
+    ports:
+      - "4002:4002"  # Expose backend on port 4002
+    env_file:
+      - ./otp-service-backend/.env   # Use backend's .env file for environment variables
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - AZURE_COMMUNICATION_CONNECTION_STRING=${AZURE_COMMUNICATION_CONNECTION_STRING}
+      - EMAIL_SENDER=${EMAIL_SENDER}
+    depends_on:
+      - redis
+    networks:
+      - otp-network
+
+  otp-frontend:
+    build: ./otp-service-frontend
+    container_name: otp-service-frontend
+    ports:
+      - "3002:80"        # Expose frontend on port 3002
+    environment:
+      - REACT_APP_API_URL=http://localhost:4002  # URL to access backend
+    networks:
+      - otp-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+networks:
+  otp-network:
+    driver: bridge
