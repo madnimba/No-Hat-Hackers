@@ -1,0 +1,44 @@
+version: '3'
+services:
+  train-info-backend:
+    build: ./train-info-service-backend
+    container_name: train-info-backend
+    ports:
+      - "4000:4000"  # Expose backend on port 4000
+    env_file:
+      - ./train-info-service-backend/.env   # Use backend's .env file for environment variables
+    depends_on:
+      - postgres-db
+    networks:
+      - train-network
+
+  train-info-frontend:
+    build: ./train-info-service-frontend
+    container_name: train-info-frontend
+    ports:
+      - "3000:80"        # Expose frontend on port 3000
+    environment:
+      - REACT_APP_API_URL=http://train-info-backend:4000  # URL to access backend
+    networks:
+      - train-network
+
+  postgres-db:
+    image: postgres:13-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: nohathackers20       # From .env file
+      POSTGRES_PASSWORD: So4Ko6Ar19  # From .env file
+      POSTGRES_DB: train_details          # From .env file
+    ports:
+      - "5432:5432"  # Expose PostgreSQL on port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - train-network
+
+networks:
+  train-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
