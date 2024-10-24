@@ -24,7 +24,7 @@ const App = () => {
         console.log(bookingData);
         try {
             // Inter-service communication with Booking Service
-            await axios.post('http://localhost:4000/api/bookings', bookingData);
+            await axios.post('http://localhost:4001/api/bookings', bookingData);
             alert('Ticket booked successfully!');
         } catch (error) {
             console.error('Error booking the ticket:', error);

@@ -1,3 +1,3 @@
 export const getTrains = async () => {
-    return await axios.get('http://train-info-backend:4000/api/trains');
+    return await axios.get(`${process.env.REACT_APP_API_URL}/api/trains`);
 };

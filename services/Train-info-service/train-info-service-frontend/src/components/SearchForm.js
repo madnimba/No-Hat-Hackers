@@ -19,7 +19,7 @@ const SearchForm = ({ onResults }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.get('http://train-info-backend:4000/api/trains/search', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/trains/search`, {
                 params: formData
             });
             onResults(response.data);
