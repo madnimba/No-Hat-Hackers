@@ -11,7 +11,7 @@ const OtpForm = () => {
 
     const handleSendOtp = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/api/send-otp', { email });
+            const response = await axios.post('http://localhost:4002/api/send-otp', { email });
             setMessage(response.data.message);
             setIsOtpSent(true);
         } catch (error) {
@@ -22,7 +22,7 @@ const OtpForm = () => {
 
     const handleVerifyOtp = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/api/verify-otp', { email, otp });
+            const response = await axios.post('http://localhost:4002/api/verify-otp', { email, otp });
             setMessage(response.data.message);
         } catch (error) {
             setMessage(error.response?.data?.message || 'Failed to verify OTP');

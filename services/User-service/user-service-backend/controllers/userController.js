@@ -1,6 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { createUser, findUserByEmail } = require('../models/userModel');
+const { createUser, findUserByEmail, findUserById } = require('../models/userModel');
+
+const getUserEmail = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ email: user.email });
+  } catch (error) {
+    console.error('Error fetching user email:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -50,4 +66,4 @@ const login = async (req, res) => {
   });
 };
 
-module.exports = { register, login };
+module.exports = { register, login, getUserEmail };

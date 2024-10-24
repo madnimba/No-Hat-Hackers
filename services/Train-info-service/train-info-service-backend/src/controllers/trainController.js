@@ -25,6 +25,24 @@ exports.getTrainById = async (req, res) => {
 };
 
 
+exports.bookSeat = async (req, res) => {
+    const { train_id, coach_id, seat_id, date } = req.body;
+    try {
+        const result = await pool.query(`
+            UPDATE seat_details
+            SET available = false
+            WHERE train_id = $1
+            AND coach_id = $2
+            AND seat_id = $3
+            AND date = $4;
+            `, [train_id, coach_id, seat_id, date]);
+        res.status(200);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 // Search for trains matching From, To, Date, and Coach_Type
 exports.searchTrains = async (req, res) => {

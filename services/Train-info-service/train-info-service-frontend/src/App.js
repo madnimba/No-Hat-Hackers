@@ -24,8 +24,11 @@ const App = () => {
         console.log(bookingData);
         try {
             // Inter-service communication with Booking Service
-            await axios.post('http://localhost:4001/api/bookings', bookingData);
-            alert('Ticket booked successfully!');
+            const response = await axios.post('http://localhost:4001/api/bookings', bookingData);
+            // alert('Ticket booked successfully!');
+            const { userid, redirectUrl } = response.data;
+            // Redirect to OTP service page with the email query parameter
+            window.location.href = `${redirectUrl}?id=${userid}`;
         } catch (error) {
             console.error('Error booking the ticket:', error);
         }

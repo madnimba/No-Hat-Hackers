@@ -4,11 +4,14 @@ services:
     build: ./booking-service-backend
     container_name: booking-backend
     ports:
-      - "4001:4001"  # Expose backend on port 4000
+      - "4001:4001"  # Expose backend on port 4001
     env_file:
       - ./booking-service-backend/.env   # Use backend's .env file for environment variables
+    environment:
+      - REDIS_URL=redis://redis:6378
     depends_on:
       - postgres-db-booking
+      - redis
     networks:
       - booking-network
 
@@ -16,7 +19,7 @@ services:
     build: ./booking-service-frontend
     container_name: booking-frontend
     ports:
-      - "3001:80"        # Expose frontend on port 3000
+      - "3001:80"        # Expose frontend on port 3001
     environment:
       - REACT_APP_API_URL=http://localhost:4001  # URL to access backend
     networks:
@@ -30,9 +33,17 @@ services:
       POSTGRES_PASSWORD: So4Ko6Ar19  # From .env file
       POSTGRES_DB: booking_details          # From .env file
     ports:
-      - "5433:5433"  # Expose PostgreSQL on port 5432
+      - "5433:5433"  # Expose PostgreSQL on port 5433
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6378:6378"  # Expose Redis on port 6378
     networks:
       - booking-network
 

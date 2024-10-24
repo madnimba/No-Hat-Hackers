@@ -1,0 +1,44 @@
+version: '3'
+services:
+  user-backend:
+    build: ./user-service-backend
+    container_name: user-service-backend
+    ports:
+      - "3999:3999"  # Expose backend on port 3999
+    env_file:
+      - ./user-service-backend/.env   # Use backend's .env file for environment variables
+    depends_on:
+      - postgres-db-user
+    networks:
+      - user-network
+
+  user-frontend:
+    build: ./user-service-frontend
+    container_name: user-service-frontend
+    ports:
+      - "2999:80"        # Expose frontend on port 2999
+    environment:
+      - REACT_APP_API_URL=http://localhost:3999  # URL to access backend
+    networks:
+      - user-network
+
+  postgres-db-user:
+    image: postgres:13-alpine
+    container_name: postgres-db-user
+    environment:
+      POSTGRES_USER: nohathackers20       # From .env file
+      POSTGRES_PASSWORD: So4Ko6Ar19  # From .env file
+      POSTGRES_DB: user_details          # From .env file
+    ports:
+      - "5431:5431"  # Expose PostgreSQL on port 5431
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - user-network
+
+networks:
+  user-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
