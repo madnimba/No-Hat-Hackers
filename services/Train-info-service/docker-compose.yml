@@ -8,7 +8,7 @@ services:
     env_file:
       - ./train-info-service-backend/.env   # Use backend's .env file for environment variables
     depends_on:
-      - postgres-db
+      - postgres-db-train
     networks:
       - train-network
 
@@ -24,7 +24,7 @@ services:
 
   postgres-db-train:
     image: postgres:13-alpine
-    container_name: postgres-db
+    container_name: postgres-db-train
     environment:
       POSTGRES_USER: nohathackers20       # From .env file
       POSTGRES_PASSWORD: So4Ko6Ar19  # From .env file
