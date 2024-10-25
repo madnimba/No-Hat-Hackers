@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: train-info-frontend
-        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/train-info-service-train-info-frontend:v1
+        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/eticket:trainf
         ports:
         - containerPort: 80
         env:

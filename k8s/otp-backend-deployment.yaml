@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: otp-backend
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: otp-backend
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: otp-backend
-        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/otp-service-otp-backend:v1
+        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/eticket:otpb
         ports:
         - containerPort: 4002
         envFrom:
@@ -39,5 +39,6 @@ metadata:
   name: otp-backend-env
 data:
   REDIS_URL: redis://redis:6379
-  AZURE_COMMUNICATION_CONNECTION_STRING: <your-azure-comm-string>
-  EMAIL_SENDER: <your-email-sender>
+  AZURE_COMMUNICATION_CONNECTION_STRING: "endpoint=https://interservice-communication-service.india.communication.azure.com/;accesskey=8a1QAJpjH0nUtEl45uPcZ5gPQC6M5dT7VdF33D2FOWNOkotgxp17JQQJ99AJACULyCpiWBHcAAAAAZCScDoC"
+  EMAIL_SENDER: "donotreply@f0e6296e-9d24-4997-9631-88a9f6fceff1.azurecomm.net"
+

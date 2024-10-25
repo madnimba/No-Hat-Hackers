@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: otp-frontend
-        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/otp-service-otp-frontend:v1
+        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/eticket:otpf
         ports:
         - containerPort: 80
         env:

@@ -9,8 +9,8 @@ services:
       - ./otp-service-backend/.env   # Use backend's .env file for environment variables
     environment:
       - REDIS_URL=redis://redis:6379
-      - AZURE_COMMUNICATION_CONNECTION_STRING=${AZURE_COMMUNICATION_CONNECTION_STRING}
-      - EMAIL_SENDER=${EMAIL_SENDER}
+      - AZURE_COMMUNICATION_CONNECTION_STRING="endpoint=https://interservice-communication-service.india.communication.azure.com/;accesskey=8a1QAJpjH0nUtEl45uPcZ5gPQC6M5dT7VdF33D2FOWNOkotgxp17JQQJ99AJACULyCpiWBHcAAAAAZCScDoC"
+      - EMAIL_SENDER="donotreply@f0e6296e-9d24-4997-9631-88a9f6fceff1.azurecomm.net"
     depends_on:
       - redis
     networks:
