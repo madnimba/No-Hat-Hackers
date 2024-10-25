@@ -13,7 +13,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/register', { name, email, password });
+      await axios.post('http://localhost:3999/api/auth/register', { name, email, password });
       navigate('/'); // Successful signup redirects to login
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed');

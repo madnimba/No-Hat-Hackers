@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchForm from './components/SearchForm';
 import TrainResults from './components/TrainResults';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const App = () => {
     const [results, setResults] = useState([]);
+    const [userID, setUserID] = useState(null);
+
+    // Extract the userID from the URL query parameter when the component mounts
+    const location = useLocation();
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const userIdFromUrl = params.get('userID');
+        setUserID(userIdFromUrl);
+    }, [location]);
 
     const handleSearchResults = (results) => {
 
@@ -14,7 +25,7 @@ const App = () => {
 
     const handleBuyTicket = async (selectedSeat, fare) => {
         const bookingData = {
-            user_id: 123, // Hardcoded for now, replace with actual user ID
+            user_id: userID, // Hardcoded for now, replace with actual user ID
             train_id: selectedSeat.train_id,
             coach_id: selectedSeat.coach_id,
             seat_id: selectedSeat.seat_id,

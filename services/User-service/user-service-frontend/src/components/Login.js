@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Box, Typography, Link } from '@mui/material';
 import axios from 'axios';
 
@@ -7,14 +6,17 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login', { email, password });
-      navigate('/dashboard'); // Successful login redirects to dashboard
+      const response = await axios.post('http://localhost:3999/api/auth/login', { email, password });
+      const data = await response.data
+      // navigate('/dashboard'); // Successful login redirects to dashboard
+      console.log("Login is successful");
+      window.location.href = data.redirectUrl;
     } catch (err) {
+      console.log(err);
       setError(err.response?.data?.message || 'Login failed');
     }
   };

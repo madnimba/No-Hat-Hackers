@@ -1,11 +1,14 @@
 const pool = require('../db');
-const { manageOTP } = require('../services/bookingService');
 const Redis = require('redis');
-const Redlock = require('redlock');
+const { Client } = require('ioredis');
+const { Redlock } = require('redlock');
 
 // Create a Redis client
-const redisClient = Redis.createClient({
-  url: 'redis://localhost:6378'  // or your Redis server URL
+// const redisClient = Redis.createClient({
+//   url: 'redis://localhost:6378'  // or your Redis server URL
+// });
+const redisClient = new Client({
+    host: 'redis://localhost:6378'
 });
 
 redisClient.on('error', (err) => console.error('Redis error:', err));

@@ -56,13 +56,14 @@ const login = async (req, res) => {
   }
 
   // Generate JWT token if the password is correct
+  console.log("Passwords match");
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
   // Send the token and redirect URL to the frontend
   res.status(200).json({
     token,
     message: 'Login successful',
-    redirectUrl: '/dashboard' // URL to redirect the user to
+    redirectUrl: `/dashboard?userId=${user.user_id}` // URL to redirect the user to
   });
 };
 
