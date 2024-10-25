@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: train-info-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: train-info-backend
+  template:
+    metadata:
+      labels:
+        app: train-info-backend
+    spec:
+      containers:
+      - name: train-info-backend
+        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/train-info-service-train-info-backend:v1
+        ports:
+        - containerPort: 4000
+        envFrom:
+        - configMapRef:
+            name: train-info-backend-env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: train-info-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: train-info-backend
+  ports:
+  - port: 4000
+    targetPort: 4000

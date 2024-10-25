@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otp-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: otp-backend
+  template:
+    metadata:
+      labels:
+        app: otp-backend
+    spec:
+      containers:
+      - name: otp-backend
+        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/otp-service-otp-backend:v1
+        ports:
+        - containerPort: 4002
+        envFrom:
+        - configMapRef:
+            name: otp-backend-env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otp-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: otp-backend
+  ports:
+  - port: 4002
+    targetPort: 4002
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otp-backend-env
+data:
+  REDIS_URL: redis://redis:6379
+  AZURE_COMMUNICATION_CONNECTION_STRING: <your-azure-comm-string>
+  EMAIL_SENDER: <your-email-sender>

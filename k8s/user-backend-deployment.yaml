@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-backend
+  template:
+    metadata:
+      labels:
+        app: user-backend
+    spec:
+      containers:
+      - name: user-backend
+        image: 050752621233.dkr.ecr.eu-north-1.amazonaws.com/bcf/user-service-user-backend:v1
+        ports:
+        - containerPort: 3999
+        envFrom:
+        - configMapRef:
+            name: user-backend-env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: user-backend
+  ports:
+  - port: 3999
+    targetPort: 3999

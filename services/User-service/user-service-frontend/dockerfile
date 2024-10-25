@@ -10,8 +10,6 @@ COPY package*.json ./
 # Install the frontend dependencies
 RUN npm install
 
-COPY .env .env
-
 # Copy the rest of the application code
 COPY . .
 

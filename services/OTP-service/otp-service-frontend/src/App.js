@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Snackbar, Alert, Typography } from '@mui/material';
 
 const App = () => {
   const [email, setEmail] = useState('');
